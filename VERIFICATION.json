@@ -1,0 +1,102 @@
+{
+  "preparedAt": "2026-09-30",
+  "targetOrigin": "https://unified.amplifier.ms",
+  "staticValidation": {
+    "passed": true,
+    "htmlFiles": 11,
+    "visitorPages": 9,
+    "relativeReferencesChecked": 395,
+    "normalPageMountsVerified": [
+      "/",
+      "/nested/preview/"
+    ],
+    "custom404Mount": "/",
+    "decorativePhotosPresent": false,
+    "errors": []
+  },
+  "prefix404Regeneration": {
+    "passed": true,
+    "mount": "/trial/unified/"
+  },
+  "sourceSyntaxChecks": "passed",
+  "httpPrefix": "/trial/unified/",
+  "httpRoutes": [
+    {
+      "route": "/",
+      "status": 200
+    },
+    {
+      "route": "/examples/",
+      "status": 200
+    },
+    {
+      "route": "/examples/workshop/",
+      "status": 200
+    },
+    {
+      "route": "/examples/decision-brief/",
+      "status": 200
+    },
+    {
+      "route": "/examples/little-tools/",
+      "status": 200
+    },
+    {
+      "route": "/capabilities/",
+      "status": 200
+    },
+    {
+      "route": "/get-started/",
+      "status": 200
+    },
+    {
+      "route": "/built-with-amplifier/",
+      "status": 200
+    },
+    {
+      "route": "/help/",
+      "status": 200
+    }
+  ],
+  "browserReview": {
+    "browser": "user local Edge",
+    "desktop": [
+      "home without decorative photo",
+      "navigation from home to workshop under prefix",
+      "story without photo"
+    ],
+    "phoneViewport": {
+      "width": 390,
+      "height": 844
+    },
+    "phoneChangedPages": [
+      {
+        "route": "/",
+        "pageWidth": 390,
+        "viewport": 390,
+        "images": 0
+      },
+      {
+        "route": "/capabilities/",
+        "pageWidth": 390,
+        "viewport": 390,
+        "images": 0
+      },
+      {
+        "route": "/built-with-amplifier/",
+        "pageWidth": 390,
+        "viewport": 390,
+        "images": 0
+      }
+    ],
+    "viewportReset": true
+  },
+  "priorCoreInteractions": "Workshop calculations, brief choices/source anchors, priority ranking/reset, platform choices, mobile navigation, and expandable answers were exercised before this packaging change. The implementations are unchanged.",
+  "limits": [
+    "Target-domain DNS, TLS and deployment not performed",
+    "Deployed-browser checks remain for worker",
+    "Earlier browser download receipt unavailable",
+    "Clipboard controls left unclicked",
+    "Optional WebMCP requires supported browser"
+  ]
+}
