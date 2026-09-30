@@ -1,0 +1,73 @@
+name: unified Static Web App Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+
+# NOTE: github.event_name is part of the key deliberately -- do not reduce this to
+# github.ref alone. For a pull_request event with action=closed on a MERGED PR,
+# github.ref resolves to the BASE branch (refs/heads/{branch}), not refs/pull/N/merge.
+# Merging fires push and pull_request(closed) ~1s apart; with a github.ref-only key they
+# share a concurrency group and cancel-in-progress kills the production deploy before it
+# reaches a runner. The close run deploys nothing -- its build job is skipped by its if:
+# guard. Keying pull_request runs by PR number keeps a close run able to cancel only
+# builds of its OWN PR. See https://github.com/actions/runner/issues/256
+concurrency:
+  group: deploy-swa-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    name: Build and Deploy Job
+    environment: ${{ github.event_name == 'push' && 'production' || 'preview' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          lfs: false
+
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        env:
+          VITE_AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+          VITE_AZURE_API_CLIENT_ID: ${{ vars.AZURE_API_CLIENT_ID }}
+          VITE_AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+          VITE_AO_CONSUMES: ${{ vars.AO_CONSUMES }}
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          ###### Repository/Build Configurations ######
+          app_location: "dist"
+          api_location: ""
+          output_location: ""
+          skip_app_build: true
+          ###### End of Repository/Build Configurations ######
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: "close"

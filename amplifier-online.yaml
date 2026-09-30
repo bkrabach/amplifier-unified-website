@@ -24,9 +24,8 @@ frontend:
   type: static-web-app
   repo: "https://github.com/bkrabach/amplifier-unified-website"
   branch: main
-  app_location: "/"
-  output_location: "dist"
-  build_command: "cp staticwebapp.config.json dist/staticwebapp.config.json"
+  app_location: "/dist"
+  output_location: ""
 
 # Note: This stack is STATIC ONLY (no backend, no databases, no SSR)
 # Need backend API? Use web-app-awa (Web App + Static Web App)
