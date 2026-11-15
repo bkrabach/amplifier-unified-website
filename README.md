@@ -1,51 +1,64 @@
 # Amplifier Unified website
 
-Deployment package for **https://unified.amplifier.ms/**, prepared September 30, 2026.
+The static website introducing [Amplifier Unified](https://github.com/microsoft/amplifier-unified)
+at [unified.amplifier.ms](https://unified.amplifier.ms/). It explains the product,
+shows interactive examples, and points visitors to installation instructions.
 
-## Deployable files
+This repository contains the website, not the Unified application. Its examples
+use illustrative data and run entirely in the browser; they do not call an AI
+service or create Amplifier sessions.
 
-Publish the contents of `dist/` as the site's static document root. The complete HTML, styles, interactions, fonts, and font licenses are included. No build, application server, package installation, API keys, database, or Sites account is needed to serve this website.
+## Preview locally
 
-See `DEPLOYMENT.md` for hosting requirements and `WORKER-HANDOFF.md` for the worker session's task.
+The ready-to-serve site is in `dist/`. With Python 3 available, run:
 
-## What changed
+```sh
+python3 -m http.server 8080 --bind 127.0.0.1 --directory dist
+```
 
-- Removed both decorative material photographs and their references from the home, capabilities, and story pages. The green workspace illustrations and Material typography remain.
-- Made ordinary page navigation, scripts, stylesheets, and font URLs relative to their document or stylesheet. There are no links or asset dependencies on the earlier preview host.
-- Made the host-served custom 404 use a configurable mount point, defaulting to `/` for unified.amplifier.ms.
+Open [http://127.0.0.1:8080](http://127.0.0.1:8080). Any static server that supports
+directory index pages can serve the same files. No application server, database,
+API keys, or package installation is needed.
 
-MADE, GitHub, Microsoft privacy, and license links remain intentional external destinations. The site's rendered visual assets are HTML/CSS and an embedded SVG favicon; it contains no photographic assets or remote asset loads. Instrument Serif and Manrope are bundled with their SIL Open Font Licenses.
+## Edit the site
 
-## Pages
-
-Home, examples collection, workshop planner, decision brief, priority picker, capabilities, get started, built with Amplifier, and questions and answers. The utility `not-found/` route and `404.html` provide recovery pages.
-
-The three examples use illustrative data and deterministic browser interactions. They do not call an AI service or create Amplifier sessions. Their downloads are generated in the browser. The getting started page points to product documentation, rather than a hosted app signup.
-
-## Edit or regenerate
-
-Page content lives in `generate.mjs` and `content.mjs`. Styles and interactions live in `dist/assets/site.css` and `dist/assets/site.js`. With a current Node.js runtime:
+Page content lives in `generate.mjs` and `content.mjs`. Styles and interactions
+live in `dist/assets/site.css` and `dist/assets/site.js`. With Node.js available,
+regenerate and check the pages:
 
 ```sh
 node generate.mjs
 node verify.mjs
 ```
 
-To mount the site under a prefix, regenerate only the custom 404 base with that prefix:
+## Publish
 
-```sh
-SITE_BASE_PATH=/preview/unified/ node generate.mjs
-node verify.mjs
-```
+Serve the contents of `dist/` as the site's document root. See
+[deployment instructions](DEPLOYMENT.md) for routing, custom 404 handling, and
+hosting under a subdirectory.
 
-Normal pages already work under a prefix. Use a static HTTP server for review; directory-style navigation expects directory index serving.
+Instrument Serif and Manrope are bundled with their SIL Open Font Licenses.
+Keep those license files with the fonts when publishing. The source is licensed
+under [MIT](LICENSE).
 
-```sh
-python3 -m http.server 8080 --bind 127.0.0.1 --directory dist
-```
+## Contributing
 
-## Validation boundary
+Most contributions require you to agree to a
+Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
+the rights to use your contribution. For details, visit [Contributor License Agreements](https://cla.opensource.microsoft.com).
 
-`VERIFICATION.json` records the package checks and browser review. Routing, asset resolution, fragments, page metadata, and source syntax were checked. All page references were verified at a domain root and under a nested prefix. Prior example calculations and core controls were exercised; the latest change leaves those implementations intact. The browser did not return a download receipt in the earlier review. Clipboard controls were left unclicked to preserve the user's clipboard. Optional WebMCP acceptance requires a supported browser.
+When you submit a pull request, a CLA bot will automatically determine whether you need to provide
+a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
+provided by the bot. You will only need to do this once across all repos using our CLA.
 
-Live product onboarding and the target domain's DNS, TLS, server configuration, and deployed-browser acceptance belong to the worker session. This archive has not been deployed to unified.amplifier.ms.
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## Trademarks
+
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
+trademarks or logos is subject to and must follow
+[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/legal/intellectualproperty/trademarks/usage/general).
+Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
+Any use of third-party trademarks or logos are subject to those third-party's policies.
